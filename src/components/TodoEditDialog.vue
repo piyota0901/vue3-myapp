@@ -41,10 +41,8 @@ console.log(props.todoId)
 
 </script>
 <template>
-  <v-card
-   max-width="600"
-   max-height="400">
-    <h1>Edit Todo</h1>
+  <v-card>
+    <v-card-title class="text-center text-decoration-underline">Edit Todo</v-card-title>
     <form v-on:submit.prevent="edit">
       <v-container>
         <v-row>

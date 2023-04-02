@@ -87,7 +87,7 @@ const removeTodo = (todoId: string):void => {
         </v-list-item>
     </template>
     </v-list>
-    <v-dialog v-model="editDialog" v-if="currentTodo" max-width="300px">
+    <v-dialog v-model="editDialog" v-if="currentTodo" origin="center center" width="600px">
       <TodoEditDialog 
         v-bind:todoId = "currentTodo.id"
         v-bind:dialog="editDialog"

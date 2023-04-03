@@ -18,11 +18,16 @@ const onClickEdit = (todo: Todo) => {
 }
 
 const onClickRemove = (todo: Todo) => {
+  console.log("onClickRemove!!!!")
   currentTodo.value = todo
   removeDialog.value = true
 }
 
-const onEditCancel = () => { editDialog.value = false }
+const onEditCancel = () => { 
+  console.log("called onEditCancel!!!"); 
+  editDialog.value = false 
+}
+
 const onEditExecute = (edited_todo: Ref<EditTodo>): void => {
   console.log("called onEditExecute!!!")
   let old_todo = todoList.get(edited_todo.value.id)!;
@@ -33,6 +38,7 @@ const onEditExecute = (edited_todo: Ref<EditTodo>): void => {
 }
 
 const removeTodo = (todoId: string):void => {
+  console.log("removeTodo!!!!")
   todoList.delete(todoId);
   removeDialog.value = false
 }

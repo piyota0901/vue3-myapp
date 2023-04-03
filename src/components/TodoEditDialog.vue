@@ -32,7 +32,7 @@ const cancel = (): void => {
 const edit = (): void => {
   if(editTodo.value.title === '') {editTodo.value.title = todo.title};
   if(editTodo.value.comment === '') {editTodo.value.comment = todo.comment};
-  emit("editExecute", editTodo)
+  emit("editExecute", editTodo);
 }
 
 
@@ -79,7 +79,7 @@ console.log(props.todoId)
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" class="me-4" v-on:click="cancel">Cancel</v-btn>
-        <v-btn color="primary" class="me-4" type="submit" v-on:click="edit">Edit</v-btn>
+        <v-btn color="primary" class="me-4" type="submit">Edit</v-btn>
       </v-card-actions>
     </form>
   </v-card>

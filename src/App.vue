@@ -3,6 +3,7 @@ import { reactive,provide } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import type {Todo} from './interfaces';
 import TodoList from './components/TodoList.vue';
+import AddTodo from './components/AddTodo.vue';
 
 // const newTodo = reactive({
 //   id: "",
@@ -82,9 +83,12 @@ provide("todoList", reactive(todoList))
     </v-app-bar>
 
     <!-- main -->
+    <!-- Todo List表示-->
     <v-main>
       <TodoList />
-    </v-main>
+    <!-- Add Todo表示-->
+      <AddTodo />
+  </v-main>
   </v-app>
 </template>
 <style scoped>

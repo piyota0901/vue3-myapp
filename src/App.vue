@@ -5,13 +5,6 @@ import type {Todo} from './interfaces';
 import TodoList from './components/TodoList.vue';
 import AddTodo from './components/AddTodo.vue';
 
-// const newTodo = reactive({
-//   id: "",
-//   title: "",
-//   comment: "",
-//   isDone: false,
-//   create_at: ""
-// })
 
 const todoList = new Map<string, Todo>();
 const initTodo1 = {
@@ -41,25 +34,6 @@ todoList.set(initTodo2.id, initTodo2);
 todoList.set(initTodo3.id, initTodo3);
 
 provide("todoList", reactive(todoList))
-
-// const addTodo = (): void => { 
-//   const todo: Todo = {
-//     id: uuidv4(),
-//     title: newTodo.title,
-//     comment: newTodo.comment,
-//     isDone: newTodo.isDone,
-//     create_at: date2string(new Date())
-//   }
-//   todoList.value.set(todo.id, todo)
-// }
-
-// const date2string = (date: Date): string => {
-//   return date.getFullYear() + '-' + Number(date.getMonth()+1) + '-' + date.getDate()
-// }
-
-// const removeTodo = (todoId:string, event: Event): void => {
-//   todoList.value.delete(todoId);
-// }
 
 </script>
 <template>

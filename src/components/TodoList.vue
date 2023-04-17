@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject,ref,computed } from 'vue';
 import type {Todo,EditTodo} from '@/interfaces';
-import TodoEditDialog from './TodoEditDialog.vue';
+import EditTodoDialog from './EditTodoDialog.vue';
 import type { Ref } from 'vue';
 const todoList = inject("todoList") as Map<string, Todo>;
 
@@ -42,6 +42,8 @@ const removeTodo = (todoId: string):void => {
   todoList.delete(todoId);
   removeDialog.value = false
 }
+
+console.log(''.length)
 
 </script>
 <template>
@@ -94,7 +96,7 @@ const removeTodo = (todoId: string):void => {
     </template>
     </v-list>
     <v-dialog v-model="editDialog" v-if="currentTodo" origin="center center" width="600px">
-      <TodoEditDialog 
+      <EditTodoDialog 
         v-bind:todoId = "currentTodo.id"
         v-bind:dialog="editDialog"
         v-on:editCancel="onEditCancel"

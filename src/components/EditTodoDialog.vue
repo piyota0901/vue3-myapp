@@ -1,77 +1,87 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import type {Ref} from 'vue';
-import type {Todo,EditTodo} from '@/interfaces';
-import { inject } from 'vue';
+import { useTodoStore } from '@/stores/todo';
+import {useForm, useField} from 'vee-validate'
+import * as yup from 'yup'
+import type {Todo} from '@/interfaces'
 
 interface Props {
   todoId: string
 }
+const props = defineProps<Props>()
 
 interface Emits {
-  (event:"editCancel"): void,
-  (event:"editExecute", edittedTodo: Ref<EditTodo>): void;
+  (event:"editClose"): void,
 }
-
-// const props = defineProps<Todo>();
-const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-const editTodo: Ref<EditTodo> = ref({
-  id: props.todoId,
-  title: '',
-  comment: ''
-})
 
-const todoList = inject("todoList") as Map<string, Todo>;
-const todo = todoList.get(props.todoId) as Todo;
+const todoStore = useTodoStore()
+const currentTodo = {...todoStore.getById(props.todoId)}
+
+const schema = yup.object({
+  title: yup.string().required(),
+  comment: yup.string().required()
+});
+
+const {handleSubmit} = useForm({
+  validationSchema: schema
+});
+
+const {value: title, errorMessage: errorTitle} = useField('title', undefined, {initialValue: ''})
+const {value: comment, errorMessage: errorComment} = useField('comment', undefined, {initialValue: ''})
 
 const cancel = (): void => {
-  emit("editCancel");
+  emit("editClose");
 };
 
-const edit = (): void => {
-  if(editTodo.value.title === '') {editTodo.value.title = todo.title};
-  if(editTodo.value.comment === '') {editTodo.value.comment = todo.comment};
-  emit("editExecute", editTodo);
-}
-
-
-
-console.log(props.todoId)
+const onSubmit = handleSubmit(values => {
+  const updateTodo: Todo = {
+    id: currentTodo.id,
+    title: values.title,
+    comment: values.comment,
+    isDone: currentTodo.isDone,
+    create_at: currentTodo.create_at
+  }
+  todoStore.update(updateTodo)
+  emit("editClose");
+  // 初期値に戻す
+  title.value = ''
+  comment.value = ''
+  });
 
 </script>
 <template>
   <v-card>
     <v-card-title class="text-center text-decoration-underline">Edit Todo</v-card-title>
-    <form v-on:submit.prevent="edit">
+    <form v-on:submit="onSubmit">
       <v-container>
         <v-row>
           <v-col>
-            <v-text-field
-            v-model="todo.title"
-            v-bind:disabled="true"
-            label="Title"
-            ></v-text-field>
+            <v-text-field 
+              v-bind:disabled="true"
+            >{{ currentTodo.title }}
+            </v-text-field>
           </v-col>
           <v-col>
             <v-text-field
-            v-model="editTodo.title"
+            v-model="title"
             label="New Title"
+            v-bind:error-messages="errorTitle"
             ></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
             <v-text-field
-              v-model="todo.comment"
               v-bind:disabled="true"
-              label="Comment"
-            ></v-text-field>
+            >
+            {{ currentTodo.comment }}
+            </v-text-field>
           </v-col>
           <v-col>
             <v-text-field
-            v-model="editTodo.comment"
+            v-model="comment"
             label="New Comment"
+            v-bind:error-messages="errorComment"
             ></v-text-field>
           </v-col>
         </v-row>

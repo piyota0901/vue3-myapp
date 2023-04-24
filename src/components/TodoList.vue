@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { inject,ref,computed } from 'vue';
-import type {Todo,EditTodo} from '@/interfaces';
+import { ref,computed } from 'vue';
+import { useTodoStore } from '@/stores/todo';
 import EditTodoDialog from './EditTodoDialog.vue';
-import type { Ref } from 'vue';
-const todoList = inject("todoList") as Map<string, Todo>;
+import type {Todo} from '@/interfaces';
 
-
+const todoStore = useTodoStore();
+const todoList = computed((): Map<string, Todo> => {
+  return todoStore.todoList
+})
 
 const editDialog = ref<boolean>(false);
 const removeDialog = ref<boolean>(false);
@@ -18,32 +20,20 @@ const onClickEdit = (todo: Todo) => {
 }
 
 const onClickRemove = (todo: Todo) => {
-  console.log("onClickRemove!!!!")
   currentTodo.value = todo
   removeDialog.value = true
 }
 
-const onEditCancel = () => { 
-  console.log("called onEditCancel!!!"); 
+const onEditClose = () => { 
   editDialog.value = false 
-}
-
-const onEditExecute = (edited_todo: Ref<EditTodo>): void => {
-  console.log("called onEditExecute!!!")
-  let old_todo = todoList.get(edited_todo.value.id)!;
-
-  old_todo.title = edited_todo.value.title
-  old_todo.comment = edited_todo.value.comment
-  editDialog.value = false
 }
 
 const removeTodo = (todoId: string):void => {
   console.log("removeTodo!!!!")
-  todoList.delete(todoId);
+  todoStore.deleteById(todoId);
   removeDialog.value = false
 }
 
-console.log(''.length)
 
 </script>
 <template>
@@ -99,8 +89,7 @@ console.log(''.length)
       <EditTodoDialog 
         v-bind:todoId = "currentTodo.id"
         v-bind:dialog="editDialog"
-        v-on:editCancel="onEditCancel"
-        v-on:editExecute="onEditExecute"
+        v-on:editClose="onEditClose"
       />
     </v-dialog>
     <v-dialog v-model="removeDialog" v-if="currentTodo" max-width="300px">

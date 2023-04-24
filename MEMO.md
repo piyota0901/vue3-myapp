@@ -83,8 +83,10 @@ const desserts = [
 - Vue3に対応しているのは`version4`の模様
   - https://vee-validate.logaretm.com/v4/tutorials/basics/
 
-
-
+- `vee-validate`でのバリデーションでハマったこと
+  - usefieldはリアクティブなのはわかるが、objectをreactiveとしたときにプロパティ分のusefieldを作成する必要があるのか。
+  - storeで状態管理まで行う例があった
+    - https://stackblitz.com/edit/vee-validate-v4-pinia?file=src%2Fstores.ts
 
 
 
